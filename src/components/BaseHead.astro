@@ -14,6 +14,8 @@ const BASE = import.meta.env.BASE_URL && import.meta.env.BASE_URL !== '/' ? impo
 const defaultImage = BASE ? `${BASE}/social_img.webp` : '/social_img.webp';
 const { title, description, image = defaultImage, ogType = 'website' } = Astro.props;
 
+const GA_MEASUREMENT_ID = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+
 // Construct absolute URL for og:image and twitter:image
 let imageUrl;
 try {
@@ -48,3 +50,16 @@ try {
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={imageUrl} />
+
+<!-- Google Analytics 4 with Partytown -->
+{GA_MEASUREMENT_ID && (
+  <>
+    <script type="text/partytown" src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    <script type="text/partytown" define:vars={{ GA_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', GA_MEASUREMENT_ID);
+    </script>
+  </>
+)}
