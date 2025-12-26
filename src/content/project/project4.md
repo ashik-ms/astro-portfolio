@@ -1,62 +1,109 @@
 ---
 title: "Retrieval-Augmented Generation (RAG) Pipeline for Financial Data Analysis"
-description: "Developed a Retrieval-Augmented Generation (RAG) pipeline integrating LLMs with a vector database to enable context-aware financial analysis and automated insight generation from unstructured market data"
+description: "Built a LangChain-based RAG pipeline that combines LLMs with a vector database to generate context-aware financial insights from unstructured market data using tool calling, memory, and streaming responses."
 pubDate: "Jun 15 2024"
-heroImage: "/post_img.webp"
-tags: ["AI", "RAG", "Finance", "LLM"]
+heroImage: "/rag/hero.png"
+tags: ["AI", "RAG", "LangChain", "LLM", "Finance"]
 ---
 
-### Overview
-Built a production-ready RAG pipeline that combines Large Language Models with vector database technology to transform unstructured financial market data into actionable insights through context-aware analysis.
+## Overview
 
-### System Architecture
+Large Language Models are powerful, but on their own they lack access to **private, up-to-date, or domain-specific financial data**.  
+This project solves that limitation by building a **Retrieval-Augmented Generation (RAG) pipeline** that grounds LLM responses in relevant financial documents.
 
-#### Vector Database Integration
-- Efficient storage and retrieval of financial documents
-- Semantic search capabilities for relevant context
-- Optimized indexing for large-scale market data
+The system allows users to ask natural-language questions about financial concepts, companies, or reports and receive **context-aware, explainable answers** sourced from real data rather than hallucinated knowledge.
 
-#### LLM Integration
-- Context-aware query processing
-- Financial domain knowledge incorporation
-- Automated insight generation
+---
 
-### Key Capabilities
+## High-Level Architecture
 
-**Context-Aware Financial Analysis:**
-- Retrieves relevant historical data and market context
-- Analyzes trends across multiple data sources
-- Generates insights grounded in actual market data
+![RAG System Architecture](/rag/system-architecture.png)
 
-**Automated Insight Generation:**
-- Processes unstructured market reports
-- Extracts key financial indicators
-- Synthesizes information into actionable insights
+At a high level, the system combines:
+- A **frontend** that captures user queries
+- A **LangChain agent** that orchestrates reasoning and tool usage
+- A **vector database** for semantic document retrieval
+- An **LLM** that generates grounded responses using retrieved context
 
-**Unstructured Data Processing:**
-- Handles diverse financial document formats
-- Extracts structured information from text
-- Maintains data lineage and source attribution
+---
 
-### Technical Stack
+## Step-by-Step Flow (Simple View)
 
-**Core Technologies:**
-- Large Language Models (LLMs)
-- Vector database for semantic search
-- Document processing pipeline
-- RAG framework implementation
+![RAG Flow Diagram](/rag/flow-diagram.png)
 
-**Data Sources:**
-- Market reports and analysis
-- Financial news and updates
-- Historical market data
-- Regulatory filings
+1. **User asks a question** (e.g., “What is EBITDA?” or “Explain recent earnings trends”)
+2. The query is sent to a **backend Python FastAPI service**
+3. The query is embedded and matched against a **vector database**
+4. Relevant document chunks are retrieved
+5. The **LLM receives both the question and retrieved context**
+6. A **context-aware answer** is streamed back to the user
 
-### Impact
-- Enables rapid analysis of large volumes of financial data
-- Provides context-aware insights for decision-making
-- Reduces time from data collection to actionable insights
-- Demonstrates practical application of RAG in finance domain
+---
 
-### Timeline
-June 2024
+## Agent & Tooling Logic
+
+![Agent Decision Flow](/rag/agent-decision.png)
+
+The LangChain agent decides dynamically:
+- Whether a tool is required (search, retrieval, calculator, etc.)
+- Which documents are relevant
+- How to structure the final response
+
+### Key Design Choices
+- **Tool Calling:** Enables retrieval, calculations, and reasoning
+- **Memory:** Maintains conversational context across turns
+- **Streaming Responses:** Improves UX by returning partial answers in real time
+
+---
+
+## Vector Search & Retrieval
+
+![Vector Database Flow](/rag/vector-search.png)
+
+- Financial documents are split into chunks
+- Each chunk is converted into **vector embeddings**
+- Queries are embedded and matched using **semantic similarity**
+- Only the **most relevant chunks** are passed to the LLM
+
+This ensures answers are **grounded in real data**, not just model intuition.
+
+---
+
+## Why RAG Matters for Finance
+
+Traditional LLMs:
+- Cannot access private financial documents
+- Hallucinate facts
+- Struggle with up-to-date market data
+
+This RAG pipeline:
+- Grounds answers in real financial sources
+- Improves accuracy and trust
+- Scales across reports, filings, and research notes
+- Enables explainable AI for finance use cases
+
+---
+
+## Key Features
+
+- Context-aware financial Q&A
+- Semantic document retrieval using embeddings
+- Tool-based agent reasoning
+- Streaming responses for better UX
+- Modular and extensible architecture
+
+---
+
+## Tech Stack
+
+- **Language:** Python  
+- **Frameworks:** LangChain, FastAPI  
+- **LLM:** OpenAI API  
+- **Vector Database:** FAISS / ChromaDB  
+- **Concepts:** RAG, Tool Calling, Memory, Embeddings  
+
+---
+
+## Links
+
+- **GitHub Repository:** https://github.com/ashik-ms/langChainAgent
