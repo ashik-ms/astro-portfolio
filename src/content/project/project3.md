@@ -1,53 +1,113 @@
 ---
-title: "Agentic AI Chatbot with LangChain"
-description: "Built agentic AI chatbot using LangChain with dynamic tool selection, integrating web search APIs and custom functions to answer complex queries through multi-step reasoning and real-time response streaming"
-pubDate: "Sep 10 2024"
-heroImage: "/post_img.webp"
-tags: ["AI", "LangChain", "Python"]
+title: "AI Agent Chatbot with Tool Use and Streaming (LangChain)"
+description: "Built a production-ready AI agent using LangChain that dynamically selects tools, streams intermediate reasoning, and delivers verifiable answers using real-time web search and deterministic utilities."
+pubDate: "Jun 15 2024"
+heroImage: "/agent/hero.png"
+tags: ["AI", "LangChain", "LLM", "Agents", "RAG"]
 ---
 
-### Overview
-Developed an intelligent agentic AI chatbot leveraging LangChain framework to create a sophisticated conversational AI system capable of dynamic tool selection and multi-step reasoning.
+## Overview
 
-### Key Features
+Large Language Models are powerful, but on their own they can hallucinate, struggle with real-time data, and fail on multi-step reasoning tasks.
 
-#### Dynamic Tool Selection
-The chatbot intelligently selects and uses appropriate tools based on the query context:
-- Web search APIs for real-time information retrieval
-- Custom functions for specialized tasks
-- Automatic tool chaining for complex queries
+In this project, I built a **production-ready AI agent chatbot** using **LangChain** that goes beyond a simple LLM wrapper. The agent is capable of **reasoning, selecting tools dynamically, and streaming both its intermediate steps and final answers** to the user in real time.
 
-#### Multi-Step Reasoning
-Implements advanced reasoning capabilities:
-- Breaks down complex queries into manageable steps
-- Maintains context across conversation turns
-- Synthesizes information from multiple sources
+The result is a transparent, verifiable, and extensible AI system suitable for real-world applications.
 
-#### Real-Time Response Streaming
-Enhanced user experience through:
-- Streaming responses as they're generated
-- Progressive disclosure of information
-- Reduced perceived latency
+---
 
-### Technical Implementation
+## System Architecture
 
-**Framework & Tools:**
-- LangChain for agent orchestration
-- Web search API integration
-- Custom function development
-- Real-time streaming protocols
 
-**Architecture:**
-- Agent-based design pattern
-- Tool abstraction layer
-- Context management system
-- Response streaming pipeline
+At a high level, the system consists of:
+- A **frontend chat interface**
+- A **Python FastAPI backend**
+- A **LangChain Agent Executor**
+- External and internal tools (search, utilities)
+- An LLM providing reasoning and response generation
 
-### Impact
-- Enables complex query resolution through automated reasoning
-- Reduces response time through streaming
-- Provides accurate, context-aware answers
-- Demonstrates practical application of agentic AI patterns
+---
 
-### Timeline
-September 2024 - October 2024
+## Step-by-Step Flow
+
+![RAG Flow](/agent/image1.png)
+
+1. The **user asks a question** in natural language  
+2. The request is sent to a **FastAPI backend**
+3. The **LangChain agent analyzes intent**
+4. The agent decides whether tools are needed  
+5. Tools are executed (search, calculations, etc.)
+6. The **LLM generates a grounded answer**
+7. Output is **streamed back to the user in real time**
+
+---
+
+## Agent with Tool Calling
+
+The core of the system is an **intelligent multi-tool agent** that:
+- Chooses between **no tool**, **retrieval**, or **calculation**
+- Chains multiple tools when required
+- Prevents hallucinations by grounding responses in tool outputs
+
+### Example
+> “Find the current temperature in NYC, multiply it by 5, and report the result in Celsius.”
+
+This requires:
+- Web search
+- Numeric computation
+- Unit conversion  
+—all handled autonomously by the agent.
+
+---
+
+## Key Features
+
+### Intelligent Multi-Tool Reasoning
+The agent uses **ReAct-style prompting** to reason about which tools to invoke and in what sequence.
+
+### Dynamic Tool Set
+- **External tools:** Real-time web search via Serper API  
+- **Internal tools:** Deterministic Python utilities (add, multiply, etc.)
+
+### Real-Time Streaming UX
+Responses are streamed token-by-token, including:
+- Tool selection
+- Tool inputs
+- Intermediate reasoning
+- Final answer
+
+This significantly improves perceived performance and user trust.
+
+### Transparent & Verifiable Output
+Final responses include:
+- Clearly structured answers
+- Citations (when web search is used)
+- A list of tools invoked during execution
+
+---
+
+## Technology Stack
+
+- **Language:** Python  
+- **Framework:** LangChain (v0.3+)  
+- **Web Backend:** FastAPI  
+- **LLM Provider:** OpenAI API  
+- **Search Tool:** Serper API  
+- **Frontend:** Vue-based chat UI  
+- **Concepts:** Agents, Tool Calling, Streaming, ReAct prompting  
+
+---
+
+## Why This Project Matters
+
+This project demonstrates my ability to:
+- Build **agentic AI systems**, not just LLM wrappers
+- Design **transparent, trustworthy AI workflows**
+- Implement **real-time streaming architectures**
+- Apply modern AI engineering patterns used in production systems
+
+---
+
+## Links
+
+- **GitHub Repository:** https://github.com/ashik-ms/langChainAgent
